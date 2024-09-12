@@ -3,16 +3,13 @@ const mongoose = require('mongoose');
 const ejs = require('ejs');
 const path = require('path');
 const Photo = require('./models/Photo');
+const { log } = require('console');
 
 const app = express();
 
 
 //connect DB
-mongoose.connect('mongodb://localhost:27017/pcat-test-db' , {
-  useNewUrlParser : true,
-  useUnifiedTopology:true,
-
-})
+mongoose.connect('mongodb://localhost:27017/pcat-test-db');
 
 
 //TEMPLATE ENGİNE
@@ -29,6 +26,17 @@ app.get('/', async (req, res) => {
     photos
   });
 });
+
+
+app.get('/photos/:id', async (req, res) => {
+  //console.log(req.params.id);
+ // res.render('about');
+    const photo = await Photo.findById(req.params.id);
+    res.render('photo' , {
+      photo
+    })
+});
+
 app.get('/about', (req, res) => {
   res.render('about');
 });
